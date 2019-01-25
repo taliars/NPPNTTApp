@@ -1,0 +1,47 @@
+﻿<Window x:Class="NPPNTTApp.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NPPNTTApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ContextMenu>
+            <ContextMenu>
+                <MenuItem
+                        Command="{Binding PopulateTableCommand}"
+                        Header="Populate table" />
+                <MenuItem
+                        Command="{Binding ClearTableCommand}"
+                        Header="Clear table" />
+            </ContextMenu>
+        </Grid.ContextMenu>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DataGrid ItemsSource="{Binding BaseClassList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" CanUserAddRows="False" ColumnWidth="*" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Date" SortMemberPath="Date" Binding="{Binding Date}"/>
+                <DataGridTextColumn Header="ObjectA" SortMemberPath="ObjectA" Binding="{Binding ObjectA}"/>
+                <DataGridTextColumn Header="TypeA" SortMemberPath="TypeA" Binding="{Binding TypeA}"/>
+                <DataGridTextColumn Header="ObjectA" SortMemberPath="ObjectB" Binding="{Binding ObjectB}"/>
+                <DataGridTextColumn Header="TypeB" SortMemberPath="TypeB" Binding="{Binding TypeB}"/>
+                <DataGridTextColumn Header="Direction" SortMemberPath="Direction" Binding="{Binding Direction}"/>
+                <DataGridTextColumn Header="Color" SortMemberPath="Color" Binding="{Binding Color}"/>
+                <DataGridTextColumn Header="Intesity" SortMemberPath="Intensity" Binding="{Binding Intensity}"/>
+                <DataGridTextColumn Header="LatitudeA" SortMemberPath="LatitudeA" Binding="{Binding LatitudeA}"/>
+                <DataGridTextColumn Header="LongitudeA" SortMemberPath="LongitudeA" Binding="{Binding LongitudeA}"/>
+                <DataGridTextColumn Header="LatitudeB" SortMemberPath="LatitudeB" Binding="{Binding LatitudeB}"/>
+                <DataGridTextColumn Header="LongitudeB" SortMemberPath="LongitudeB" Binding="{Binding LongitudeB}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <ProgressBar Width="500" Margin="5"/>
+            <Button Content="Close" Grid.Row="1" Margin="5" Width="{Binding ElementName=PopulateBtn, Path=ActualWidth}" Command="{Binding CloseAppCommand}"/>
+            <Button Content="Reset" Grid.Row="1" Margin="5" Width="{Binding ElementName=PopulateBtn, Path=ActualWidth}" Command="{Binding ClearTableCommand}"/>
+            <Button Content="Populate" Padding="5,0" Margin="5" x:Name="PopulateBtn" HorizontalAlignment="Right"  Command="{Binding PopulateTableCommand}"/>
+         </StackPanel>
+     </Grid>
+</Window>
