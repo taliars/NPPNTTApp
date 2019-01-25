@@ -20,6 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <DataGrid ItemsSource="{Binding BaseClassList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" CanUserAddRows="False" ColumnWidth="*" AutoGenerateColumns="False">
             <DataGrid.Columns>
@@ -38,10 +39,14 @@
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Row="1" Orientation="Horizontal" FlowDirection="RightToLeft">
-            <ProgressBar Width="500" Margin="5"/>
+
             <Button Content="Close" Grid.Row="1" Margin="5" Width="{Binding ElementName=PopulateBtn, Path=ActualWidth}" Command="{Binding CloseAppCommand}"/>
             <Button Content="Reset" Grid.Row="1" Margin="5" Width="{Binding ElementName=PopulateBtn, Path=ActualWidth}" Command="{Binding ClearTableCommand}"/>
             <Button Content="Populate" Padding="5,0" Margin="5" x:Name="PopulateBtn" HorizontalAlignment="Right"  Command="{Binding PopulateTableCommand}"/>
          </StackPanel>
-     </Grid>
+
+        <TextBlock x:Name="ProgressTextBlock" Grid.Column="0" Grid.Row="2"
+                       FontSize="20" Margin="2"  Width="200" Text="{Binding ProgressMessage}"
+                       VerticalAlignment="Top" HorizontalAlignment="Right"/>
+    </Grid>
 </Window>
