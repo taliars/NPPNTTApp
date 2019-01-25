@@ -1,12 +1,26 @@
 ﻿using NPPNTTApp.Model;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Windows.Input;
 
 namespace NPPNTTApp.ModelView
 {
-    public class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : BaseViewModel
     {
+        private string _progressMessage;
+
+        public string ProgressMessage
+        {
+            get { return _progressMessage; }
+            set
+            {
+                _progressMessage = value;
+                OnPropertyChanged(nameof(ProgressMessage));
+            }
+        }
+
+        Progress<BaseProgressData> _progress;
+
         private List<BaseClass> _baseClassList;
 
         public List<BaseClass> BaseClassList
@@ -19,20 +33,23 @@ namespace NPPNTTApp.ModelView
             }
         }
 
-        public RelayCommand PopulateTableCommand { get; set; }
-        public RelayCommand ClearTableCommand { get; set; }
-        public RelayCommand CloseAppCommand { get; set; }
+        public ICommand PopulateTableCommand { get; set; }
+        public ICommand ClearTableCommand { get; set; }
+        public ICommand CloseAppCommand { get; set; }
 
         public MainViewModel()
         {
             PopulateTableCommand = new RelayCommand
-                (o => BaseClassList = ReadCSV.ReadFile());
+                (async o => BaseClassList = await ReadCSV.Get(_progress));
 
             ClearTableCommand = new RelayCommand
                  (o => BaseClassList = null);
 
             CloseAppCommand = new RelayCommand(o => OnClosingRequest());
+
+            _progress = new Progress<BaseProgressData>(d => ProgressMessage = $"{d.Item} from {d.Total}");
         }
+
 
         protected void OnClosingRequest()
         {
@@ -40,12 +57,5 @@ namespace NPPNTTApp.ModelView
         }
 
         public event EventHandler ClosingRequest;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string prop)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
     }
 }
