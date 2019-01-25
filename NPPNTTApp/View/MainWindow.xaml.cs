@@ -15,10 +15,5 @@ namespace NPPNTTApp.View
             DataContext = viewModel;
             viewModel.ClosingRequest += (s, e) => Close();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("You clicked the button, BITCH!");
-        }
     }
 }

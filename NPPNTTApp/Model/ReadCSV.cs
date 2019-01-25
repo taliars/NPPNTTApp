@@ -15,8 +15,6 @@ namespace NPPNTTApp.Model
             IProgress<BaseProgressData> progress, 
             CancellationToken cancellationToken)
         {
-
-
             List<BaseClass> outPutList = new List<BaseClass>();
 
             CommonOpenFileDialog dialog = new CommonOpenFileDialog();
@@ -66,7 +64,7 @@ namespace NPPNTTApp.Model
                         progress?.Report(new BaseProgressData(i + 1, total));
                         i++;
 
-                        await Task.Delay(1000);
+                        await Task.Delay(30);
                     }                
 
                     outPutList = data.ToList();

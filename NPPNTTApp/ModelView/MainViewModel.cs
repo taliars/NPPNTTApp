@@ -1,17 +1,26 @@
 ﻿using NPPNTTApp.Model;
+using NPPNTTApp.View;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace NPPNTTApp.ModelView
 {
     public class MainViewModel : BaseViewModel
     {
+        #region private fields
+
         private string _progressMessage;
         Progress<BaseProgressData> _progress;
         private List<BaseClass> _baseClassList;
-        
+        CancellationTokenSource m_source;
+
+        #endregion
+
+        #region Bindible Properties
+
         public string ProgressMessage
         {
             get { return _progressMessage; }
@@ -43,6 +52,8 @@ namespace NPPNTTApp.ModelView
         public ICommand CloseAppCommand { get; set; }
         public ICommand CancelLoadCommand { get; set; }
 
+        #endregion
+
         public MainViewModel()
         {
             _progress = new Progress<BaseProgressData>
@@ -54,11 +65,20 @@ namespace NPPNTTApp.ModelView
             CancelLoadCommand = new RelayCommand(o => CancelLoad());
         }
 
-        CancellationTokenSource m_source;
-
         private async void BeginLoadAsync(CancellationToken token)
         {
+            
+
             BaseClassList = await ReadCSV.Get(_progress, token);
+
+            if (BaseClassList.Count != 0)            
+                ProgressMessage = "Loading completed";
+            
+
+            await Task.Delay(1000);
+            ProgressMessage = "Ready";
+
+          
         }
 
         void BeginLoad()
@@ -70,7 +90,7 @@ namespace NPPNTTApp.ModelView
         private void CancelLoad()
         {
             m_source.Cancel();
-            ProgressMessage = "Loading is cancelled";
+            ProgressMessage = "Loading was cancelled";
         }
 
         protected void OnClosingRequest()
