@@ -15,11 +15,23 @@ namespace NPPNTTApp.ModelView
         private string _progressMessage;
         Progress<BaseProgressData> _progress;
         private List<BaseClass> _baseClassList;
-        CancellationTokenSource m_source;
+        CancellationTokenSource tokenSource;
+        private string _path;
 
         #endregion
 
         #region Bindible Properties
+
+        public string Path
+        {
+            get { return _path; }
+            set
+            {
+                _path = value;
+                OnPropertyChanged(nameof(ProgressMessage));
+                BeginLoadAsync()    ;
+            }
+        }
 
         public string ProgressMessage
         {
@@ -47,49 +59,44 @@ namespace NPPNTTApp.ModelView
             }
         }
 
-        public ICommand PopulateTableCommand { get; set; }
+
         public ICommand ClearTableCommand { get; set; }
         public ICommand CloseAppCommand { get; set; }
         public ICommand CancelLoadCommand { get; set; }
+        public int Item { get; set; }
+        public int Total { get; set; }
 
         #endregion
 
         public MainViewModel()
         {
             _progress = new Progress<BaseProgressData>
-                (d => ProgressMessage = $"{d.Item} rows out of {d.Total} is loaded");
+                (d =>
+                {
+                    ProgressMessage = $"{d.Item} rows out of {d.Total} is loaded";
+                    Item = d.Item; Total = d.Total;
+                });
 
-            PopulateTableCommand = new RelayCommand(o => BeginLoad());
             ClearTableCommand = new RelayCommand(o => BaseClassList = null);
             CloseAppCommand = new RelayCommand(o => OnClosingRequest());
             CancelLoadCommand = new RelayCommand(o => CancelLoad());
         }
 
-        private async void BeginLoadAsync(CancellationToken token)
+        private async void BeginLoadAsync()
         {
-            
+            tokenSource = new CancellationTokenSource();
+            BaseClassList = await ReadCSV.Get(Path, _progress, tokenSource.Token);
 
-            BaseClassList = await ReadCSV.Get(_progress, token);
-
-            if (BaseClassList.Count != 0)            
+            if (BaseClassList.Count != 0)
                 ProgressMessage = "Loading completed";
-            
 
             await Task.Delay(1000);
             ProgressMessage = "Ready";
-
-          
-        }
-
-        void BeginLoad()
-        {
-            m_source = new CancellationTokenSource();
-            BeginLoadAsync(m_source.Token);
         }
 
         private void CancelLoad()
         {
-            m_source.Cancel();
+            tokenSource.Cancel();
             ProgressMessage = "Loading was cancelled";
         }
 

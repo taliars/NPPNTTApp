@@ -15,7 +15,8 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ProgressBar Margin="2" Value="{Binding Path=ViewModel.DownloadProgres, Mode=OneWay}" />
+        <ProgressBar Value="{Binding CurrentProgress, Mode=OneWay}" 
+             Visibility="{Binding ProgressVisibility}" Margin="2" x:Name="progbar" />
         <Button
             Grid.Row="2"
             Width="100"

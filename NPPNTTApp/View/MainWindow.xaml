@@ -104,9 +104,12 @@
                 Margin="5"
                 Padding="5,0"
                 HorizontalAlignment="Right"
-                Command="{Binding PopulateTableCommand}"
+                Click="PopulateBtn_Click"
                 Content="Populate" />
         </StackPanel>
+
+        <!--Command="{Binding PopulateTableCommand}"-->
+
 
         <TextBlock
             x:Name="ProgressTextBlock"

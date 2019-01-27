@@ -11,18 +11,14 @@ namespace NPPNTTApp.Model
 {
     public static class ReadCSV
     {
-        public static async Task<List<BaseClass>> Get(
+        public static async Task<List<BaseClass>> Get(string fileName,
             IProgress<BaseProgressData> progress, 
             CancellationToken cancellationToken)
         {
             List<BaseClass> outPutList = new List<BaseClass>();
 
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.Filters.Add(new CommonFileDialogFilter("csv файлы", "*.csv"));
-
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                using (var reader = File.OpenText(dialog.FileName))
+ 
+                using (var reader = File.OpenText(fileName))
                 {
                     var fileText = await reader.ReadToEndAsync();
                     string[] linesa =  fileText.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
@@ -69,10 +65,10 @@ namespace NPPNTTApp.Model
 
                     outPutList = data.ToList();
                 }
-            }
 
             return outPutList;
+            }
 
-        }
+
     }
 }

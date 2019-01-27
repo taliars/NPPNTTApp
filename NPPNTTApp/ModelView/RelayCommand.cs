@@ -10,6 +10,13 @@ namespace NPPNTTApp.ModelView
             ExecuteDelegate = action;
         }
 
+        public RelayCommand(Action<object> execute,
+                  Predicate<object> canExecute)
+        {
+            ExecuteDelegate = execute;
+            CanExecuteDelegate = canExecute;
+        }
+
         public Predicate<object> CanExecuteDelegate { get; set; }
         public Action<object> ExecuteDelegate { get; set; }
 

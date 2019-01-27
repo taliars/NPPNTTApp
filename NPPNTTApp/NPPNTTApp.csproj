@@ -73,6 +73,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ModelView\BaseViewModel.cs" />
+    <Compile Include="ModelView\LoadVIewModel.cs" />
     <Compile Include="ModelView\RelayCommand.cs" />
     <Compile Include="Model\BaseProgressData.cs" />
     <Compile Include="Model\ReadCSV.cs" />
